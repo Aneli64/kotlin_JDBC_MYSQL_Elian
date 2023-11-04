@@ -2,12 +2,6 @@ import java.io.File
 import javax.xml.parsers.DocumentBuilderFactory
 
 fun main() {
-    //Objeto XML
-    val xml = File("Nomina.xml")
-    val instancia = DocumentBuilderFactory.newInstance()
-    val constr = instancia.newDocumentBuilder()
-    val doc = constr.parse(xml)
-
     //Objeto SQL
     val bdSQL = Sql_Oper(Conexion.connect)
 
@@ -32,6 +26,5 @@ fun main() {
     //for (item in listaNominas) println(item)
 
     //lista de objetos a XML
-    Nomina_XML.objetosToXML(listaNominas, doc)
-    Nomina_XML.guardarDocumentoXML(doc, "Nomina.xml")
+    Nomina_XML.objetosToXML(listaNominas)
 }
