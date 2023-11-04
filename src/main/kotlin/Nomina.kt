@@ -6,5 +6,8 @@ class Nomina(var nomb_emp: String = "",
              var deducc: Double = 0.0,
              var fech_pag: String = "")
 {
+    override fun toString(): String {
+        return "Nomina(nomb_emp='$nomb_emp', ape_emp='$ape_emp', n_emp=$n_emp, sal_base=$sal_base, hs_trab=$hs_trab, deducc=$deducc, fech_pag='$fech_pag')"
+    }
 
 }

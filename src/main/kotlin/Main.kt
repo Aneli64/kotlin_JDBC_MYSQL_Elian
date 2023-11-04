@@ -1,35 +1,24 @@
-import java.sql.DriverManager
-
 fun main() {
-    // Datos de conexión
-    val jdbcUrl = "jdbc:mysql://localhost:3306/nomina"
-    val user = "user"
-    val passwd = "user"
-    val conexion = DriverManager.getConnection(jdbcUrl, user, passwd) //intentar gestionar posible null
+    //Objeto SQL
+    val Bd_SQL = Sql_Oper(Conexion.connect)
 
-    //statment de la bd
-    val statement = conexion.createStatement()
-
+    //DELETE
     val deleteQuery = "DELETE FROM tb_nomina"
-    statement.executeUpdate(deleteQuery)
+    Bd_SQL.delete(deleteQuery)
 
-    //insert
-    val insert =
-        conexion.prepareStatement("INSERT INTO tb_nomina (nomb_emp, ape_emp, n_emp, sal_base, hs_trab, deducc, fech_pag) VALUES (?, ?, ?, ?, ?, ?, ?)")
+    //INSERT
+    val insertQuery = "INSERT INTO tb_nomina (nomb_emp, ape_emp, n_emp, sal_base, hs_trab, deducc, fech_pag) VALUES (?, ?, ?, ?, ?, ?, ?)"
+    val listaUser1: List<Any> = listOf("Juan", "Perez", 1, 1200.00, 40, 200.00, "12/02/2000")
+    val listaUser2: List<Any> = listOf("Maria", "Lopez", 2, 1400.00, 50, 300.00, "17/04/2002")
 
-    insert.setString(1, "Juan")
-    insert.setString(2, "Perez")
-    insert.setInt(3, 1)
-    insert.setDouble(4, 1200.00)
-    insert.setInt(5, 40)
-    insert.setDouble(6, 200.00)
-    insert.setString(7, "12/02/2000")
-    insert.executeUpdate()
+    //Pasamos lista de valores que va a incluir y la query de insercción
+    Bd_SQL.insert(listaUser1, insertQuery)
+    Bd_SQL.insert(listaUser2, insertQuery)
 
+    //SELECT
+    print(Bd_SQL.select("SELECT * FROM tb_nomina"))
 
-    val select = statement.executeQuery("SELECT * FROM tb_nomina")
-
-    while (select.next()) {
-        println("${select.getString("nomb_emp")} || ${select.getString("ape_emp")}")
-    }
+    //Lista de objetos extraía de la BD
+    val listaNominas = Bd_SQL.selectToNominaObject("tb_nomina")
+    //for (item in listaNominas) println(item)
 }
