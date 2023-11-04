@@ -1,4 +1,4 @@
-class nomina(var nomb_emp: String = "",
+class Nomina(var nomb_emp: String = "",
              var ape_emp: String = "",
              var n_emp: Int = 0,
              var sal_base: Double = 0.0,
