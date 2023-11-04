@@ -1,10 +1,19 @@
+import java.io.File
+import javax.xml.parsers.DocumentBuilderFactory
+
 fun main() {
+    //Objeto XML
+    val xml = File("Nomina.xml")
+    val instancia = DocumentBuilderFactory.newInstance()
+    val constr = instancia.newDocumentBuilder()
+    val doc = constr.parse(xml)
+
     //Objeto SQL
-    val Bd_SQL = Sql_Oper(Conexion.connect)
+    val bdSQL = Sql_Oper(Conexion.connect)
 
     //DELETE
     val deleteQuery = "DELETE FROM tb_nomina"
-    Bd_SQL.delete(deleteQuery)
+    bdSQL.delete(deleteQuery)
 
     //INSERT
     val insertQuery = "INSERT INTO tb_nomina (nomb_emp, ape_emp, n_emp, sal_base, hs_trab, deducc, fech_pag) VALUES (?, ?, ?, ?, ?, ?, ?)"
@@ -12,13 +21,17 @@ fun main() {
     val listaUser2: List<Any> = listOf("Maria", "Lopez", 2, 1400.00, 50, 300.00, "17/04/2002")
 
     //Pasamos lista de valores que va a incluir y la query de insercción
-    Bd_SQL.insert(listaUser1, insertQuery)
-    Bd_SQL.insert(listaUser2, insertQuery)
+    bdSQL.insert(listaUser1, insertQuery)
+    bdSQL.insert(listaUser2, insertQuery)
 
     //SELECT
-    print(Bd_SQL.select("SELECT * FROM tb_nomina"))
+    print(bdSQL.select("SELECT * FROM tb_nomina"))
 
     //Lista de objetos extraía de la BD
-    val listaNominas = Bd_SQL.selectToNominaObject("tb_nomina")
+    val listaNominas = bdSQL.selectToNominaObject("tb_nomina")
     //for (item in listaNominas) println(item)
+
+    //lista de objetos a XML
+    Nomina_XML.objetosToXML(listaNominas, doc)
+    Nomina_XML.guardarDocumentoXML(doc, "Nomina.xml")
 }
