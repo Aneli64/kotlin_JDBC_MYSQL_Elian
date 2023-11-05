@@ -8,15 +8,15 @@ import javax.xml.transform.stream.StreamResult
 
 class Nomina_XML {
     companion object {
-        private fun guardarDocumentoXML(doc: Document, nombreArchivo: String) {
+        private fun guardarDocumentoXML(doc: Document, fileName: String) {
             val transformerFactory = TransformerFactory.newInstance()
             val transformer: Transformer = transformerFactory.newTransformer()
             transformer.setOutputProperty("indent", "yes") // Habilitar la indentación
             transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2") // Espacios de indentación
             val source = DOMSource(doc)
-            val result = StreamResult(File(nombreArchivo))
+            val result = StreamResult(File(fileName))
             transformer.transform(source, result)
-            println("Archivo XML guardado como $nombreArchivo")
+            println("Archivo XML guardado como $fileName")
         }
 
         fun objetosToXML(listaNominas: MutableList<Nomina>) {
@@ -26,34 +26,41 @@ class Nomina_XML {
             val constr = instancia.newDocumentBuilder()
             val doc = constr.parse(xml)
 
-            val nombEmp = doc.createElement("nomb_emp")
-            val apeEmp = doc.createElement("ape_emp")
-            val nEmp = doc.createElement("n_emp")
-            val salBase = doc.createElement("sal_base")
-            val hsTrab = doc.createElement("hs_trab")
+            //creación de etiquetas para su uso en nuestro XML
+            val nombEmp = doc.createElement("nombEmp")
+            val apeEmp = doc.createElement("apeEmp")
+            val nEmp = doc.createElement("nEmp")
+            val salBase = doc.createElement("salBase")
+            val hsTrab = doc.createElement("hsTrab")
             val deducc = doc.createElement("deducc")
-            val fechPag = doc.createElement("fech_pag")
+            val fechPag = doc.createElement("fechPag")
 
-            //val listaAtrib = listOf(nombEmp, apeEmp, nEmp, salBase, hsTrab, deducc, fechPag)
+            //lista de atributos creados anteriormente, utilizados para iterar en ellos
+            val listaAtrib = listOf(nombEmp, apeEmp, nEmp, salBase, hsTrab, deducc, fechPag)
 
             for (i in listaNominas.indices) {
                 //Etiquetas de nuestro file que hacen referencia al objeto Nomina()
                 val nominaElm = doc.createElement("nomina")
                 doc.documentElement.appendChild(nominaElm)
 
-                /*nominaElm.appendChild(nombEmp)
-                nombEmp.textContent = listaNominas[i].nomb_emp*/
+                //Bucle que itera en nuestros atributos y los crea y añade a su etiqueta nomina correspondiente
+                for (j in listaAtrib.indices) {
+                    val atributo = doc.createElement(listaAtrib[j].tagName)
+                    nominaElm.appendChild(atributo)
 
-
+                    //bucle que utilizaremos para asignar los textcontent, dependiento del tagName que recibamos
+                    when (atributo.tagName) {
+                        "nombEmp" -> atributo.textContent = listaNominas[i].nomb_emp
+                        "apeEmp" -> atributo.textContent = listaNominas[i].ape_emp
+                        "nEmp" -> atributo.textContent = listaNominas[i].n_emp.toString()
+                        "salBase" -> atributo.textContent = listaNominas[i].sal_base.toString()
+                        "hsTrab" -> atributo.textContent = listaNominas[i].hs_trab.toString()
+                        "deducc" -> atributo.textContent = listaNominas[i].deducc.toString()
+                        "fechPag" -> atributo.textContent = listaNominas[i].fech_pag
+                    }
+                }
             }
-
-
-
-
-
             guardarDocumentoXML(doc, "Nomina.xml")
-
-
         }
     }
 }
