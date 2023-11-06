@@ -1,3 +1,6 @@
+package Controlador
+
+import Modelo.Nomina
 import org.w3c.dom.Document
 import java.io.File
 import javax.xml.parsers.DocumentBuilderFactory
@@ -21,7 +24,7 @@ class Nomina_XML {
 
         fun objetosToXML(listaNominas: MutableList<Nomina>) {
             //Datos necesarios para crear nuestro File
-            val xml = File("Nomina.xml")
+            val xml = File("Modelo.Nomina.xml")
             val instancia = DocumentBuilderFactory.newInstance()
             val constr = instancia.newDocumentBuilder()
             val doc = constr.parse(xml)
@@ -39,7 +42,7 @@ class Nomina_XML {
             val listaAtrib = listOf(nombEmp, apeEmp, nEmp, salBase, hsTrab, deducc, fechPag)
 
             for (i in listaNominas.indices) {
-                //Etiquetas de nuestro file que hacen referencia al objeto Nomina()
+                //Etiquetas de nuestro file que hacen referencia al objeto Modelo.Nomina()
                 val nominaElm = doc.createElement("nomina")
                 doc.documentElement.appendChild(nominaElm)
 
@@ -60,7 +63,7 @@ class Nomina_XML {
                     }
                 }
             }
-            guardarDocumentoXML(doc, "Nomina.xml")
+            guardarDocumentoXML(doc, "Modelo.Nomina.xml")
         }
     }
 }

@@ -1,9 +1,11 @@
-import java.io.File
-import javax.xml.parsers.DocumentBuilderFactory
+import Controlador.Menu
+import Vista.Valores
 
 fun main() {
+    //val entrada = Valores.entrada
+    Menu.start()
     //Objeto SQL
-    val bdSQL = Sql_Oper(Conexion.connect)
+    /*val bdSQL = Sql_Oper(Conexion.connect)
 
     //DELETE
     val deleteQuery = "DELETE FROM tb_nomina"
@@ -26,5 +28,5 @@ fun main() {
     //for (item in listaNominas) println(item)
 
     //lista de objetos a XML
-    Nomina_XML.objetosToXML(listaNominas)
+    Nomina_XML.objetosToXML(listaNominas)*/
 }

@@ -1,9 +1,40 @@
+package Controlador
+
+import Modelo.Conexion
+import Modelo.Nomina
 import java.sql.Connection
 
 class Sql_Oper(private val connect: Connection) {
 
     //statment de la bd
     private val statement = Conexion.connect.createStatement()
+
+    private fun nominaToList(nomina: Nomina): List<String> { //pasamos nomina a lista, para ser tratado con mayor facilidad
+        return listOf(
+            nomina.nomb_emp, nomina.ape_emp, nomina.n_emp.toString(),
+            nomina.sal_base.toString(), nomina.hs_trab.toString(), nomina.deducc.toString(), nomina.fech_pag
+        )
+
+    }
+    fun datosToInsert(): List<String>{
+        val nomina = Nomina()
+        val listaAtrib = listOf("nombEmp", "apeEmp", "nEmp", "salBase", "hsTrab", "deducc", "fechPag")
+
+        for (item in listaAtrib) {
+            print("Introduzca su $item:\n")
+            val dato = readln()
+            when (item) {
+                listaAtrib[0] -> nomina.nomb_emp = dato
+                listaAtrib[1] -> nomina.ape_emp = dato
+                listaAtrib[2] -> nomina.n_emp = dato.toInt()
+                listaAtrib[3] -> nomina.sal_base = dato.toDouble()
+                listaAtrib[4] -> nomina.hs_trab = dato.toInt()
+                listaAtrib[5] -> nomina.deducc = dato.toDouble()
+                listaAtrib[6] -> nomina.fech_pag = dato
+            }
+        }
+        return nominaToList(nomina)
+    }
 
     fun insert(valores: List<Any>, sentencia: String) {
         val insert = connect.prepareStatement(sentencia)
@@ -36,7 +67,8 @@ class Sql_Oper(private val connect: Connection) {
     }
 
     fun selectToNominaObject(nombre_tabla: String): MutableList<Nomina> {
-        val sentencia = "SELECT * FROM $nombre_tabla" //hacemos un select de la tabla para extraer sus datos y convertirlos a objetos
+        val sentencia =
+            "SELECT * FROM $nombre_tabla" //hacemos un select de la tabla para extraer sus datos y convertirlos a objetos
         val select = statement.executeQuery(sentencia)
         var nomina = Nomina()
         val listaNominas: MutableList<Nomina> = mutableListOf()
