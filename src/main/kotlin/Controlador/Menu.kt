@@ -1,46 +1,37 @@
 package Controlador
 //println y redln estan aqui
 
-import Modelo.Conexion
 import Vista.Valores
 
 class Menu {
     companion object {
         //Objeto SQL
-        private val bdSQL = Sql_Oper(Conexion.connect)
+        //private val bdSQL = Sql_Oper(Conexion.connect)
 
         fun start() {
-            bdSQL.delete("DELETE FROM tb_nomina") //hacemos un delete inicial para poder crear nuevos usuarios sin problemas
-            Valores.inicio()
-            Valores.entrada
-            while (Valores.entrada.isNotBlank()) {
-                when (Valores.entrada) {
+            Valores.realizardelete() //delete inicial para la bd (hay que quitarlo)
+            var input = Valores.inicio()
+            while (input.isNotBlank()) {
+                when (input) {
                     "1" -> {
-                        print(bdSQL.select("SELECT * FROM tb_nomina"))
-                        Valores.inicio()
-                        Valores.entrada = readln()
+                        Valores.imprimeSelect()
+                        input = Valores.inicio()
                     }
 
                     "2" -> {
-                        bdSQL.insert(
-                            bdSQL.datosToInsert(),
-                            "INSERT INTO tb_nomina (nomb_emp, ape_emp, n_emp, sal_base, hs_trab, deducc, fech_pag) VALUES (?, ?, ?, ?, ?, ?, ?)"
-                        )
-                        Valores.inicio()
-                        Valores.entrada = readln()
+                        Valores.realizaInsert()
+                        input = Valores.inicio()
                     }
 
                     "3" -> {
-                        bdSQL.delete("DELETE FROM tb_nomina")
-                        Valores.inicio()
-                        Valores.entrada = readln()
+                        Valores.realizardelete()
+                        input = Valores.inicio()
                     }
 
                     "4" -> break
                 }
             }
         }
-
 
 
     }

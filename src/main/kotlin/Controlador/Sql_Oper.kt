@@ -9,6 +9,9 @@ class Sql_Oper(private val connect: Connection) {
     //statment de la bd
     private val statement = Conexion.connect.createStatement()
 
+    //conexion
+    //private val connect: Connection
+
     private fun nominaToList(nomina: Nomina): List<String> { //pasamos nomina a lista, para ser tratado con mayor facilidad
         return listOf(
             nomina.nomb_emp, nomina.ape_emp, nomina.n_emp.toString(),
@@ -64,6 +67,11 @@ class Sql_Oper(private val connect: Connection) {
         }
 
         return salida
+    }
+
+    fun update(){
+
+
     }
 
     fun selectToNominaObject(nombre_tabla: String): MutableList<Nomina> {
