@@ -53,13 +53,13 @@ class Nomina_XML {
 
                     //bucle que utilizaremos para asignar los textcontent, dependiento del tagName que recibamos
                     when (atributo.tagName) {
-                        "nombEmp" -> atributo.textContent = listaNominas[i].nomb_emp
-                        "apeEmp" -> atributo.textContent = listaNominas[i].ape_emp
-                        "nEmp" -> atributo.textContent = listaNominas[i].n_emp.toString()
-                        "salBase" -> atributo.textContent = listaNominas[i].sal_base.toString()
-                        "hsTrab" -> atributo.textContent = listaNominas[i].hs_trab.toString()
+                        "nombEmp" -> atributo.textContent = listaNominas[i].nombEmp
+                        "apeEmp" -> atributo.textContent = listaNominas[i].apeEmp
+                        "nEmp" -> atributo.textContent = listaNominas[i].nEmp.toString()
+                        "salBase" -> atributo.textContent = listaNominas[i].salBase.toString()
+                        "hsTrab" -> atributo.textContent = listaNominas[i].hsTrab.toString()
                         "deducc" -> atributo.textContent = listaNominas[i].deducc.toString()
-                        "fechPag" -> atributo.textContent = listaNominas[i].fech_pag
+                        "fechPag" -> atributo.textContent = listaNominas[i].fechPag
                     }
                 }
             }

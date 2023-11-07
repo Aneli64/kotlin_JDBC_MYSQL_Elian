@@ -5,11 +5,8 @@ import Vista.Valores
 
 class Menu {
     companion object {
-        //Objeto SQL
-        //private val bdSQL = Sql_Oper(Conexion.connect)
-
         fun start() {
-            Valores.realizardelete() //delete inicial para la bd (hay que quitarlo)
+            Sql_Oper.delete() //delete inicial para la bd (hay que quitarlo)
             var input = Valores.inicio()
             while (input.isNotBlank()) {
                 when (input) {
@@ -19,21 +16,24 @@ class Menu {
                     }
 
                     "2" -> {
-                        Valores.realizaInsert()
+                        Sql_Oper.insert()
                         input = Valores.inicio()
                     }
 
                     "3" -> {
-                        Valores.realizardelete()
+                        Sql_Oper.delete()
                         input = Valores.inicio()
                     }
 
-                    "4" -> break
+                    "4" -> {
+                        Sql_Oper.update()
+                        input = Valores.inicio()
+                    }
+
+                    "5" -> break
                 }
             }
         }
-
-
     }
 }
 

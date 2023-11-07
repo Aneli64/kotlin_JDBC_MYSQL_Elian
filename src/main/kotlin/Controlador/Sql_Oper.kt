@@ -4,76 +4,76 @@ import Modelo.Conexion
 import Modelo.Nomina
 import java.sql.Connection
 
-class Sql_Oper(private val connect: Connection) {
+class Sql_Oper() {
+    companion object {
+        //VARIABLES NECESARIAS PARA LA CONEXION DE LA BD
+        private val statement = Conexion.connect.createStatement()
+        private val connect: Connection = Conexion.connect
 
-    //statment de la bd
-    private val statement = Conexion.connect.createStatement()
-
-    //conexion
-    //private val connect: Connection
-
-    private fun nominaToList(nomina: Nomina): List<String> { //pasamos nomina a lista, para ser tratado con mayor facilidad
-        return listOf(
-            nomina.nomb_emp, nomina.ape_emp, nomina.n_emp.toString(),
-            nomina.sal_base.toString(), nomina.hs_trab.toString(), nomina.deducc.toString(), nomina.fech_pag
-        )
-
-    }
-    fun datosToInsert(): List<String>{
-        val nomina = Nomina()
-        val listaAtrib = listOf("nombEmp", "apeEmp", "nEmp", "salBase", "hsTrab", "deducc", "fechPag")
-
-        for (item in listaAtrib) {
-            print("Introduzca su $item:\n")
-            val dato = readln()
-            when (item) {
-                listaAtrib[0] -> nomina.nomb_emp = dato
-                listaAtrib[1] -> nomina.ape_emp = dato
-                listaAtrib[2] -> nomina.n_emp = dato.toInt()
-                listaAtrib[3] -> nomina.sal_base = dato.toDouble()
-                listaAtrib[4] -> nomina.hs_trab = dato.toInt()
-                listaAtrib[5] -> nomina.deducc = dato.toDouble()
-                listaAtrib[6] -> nomina.fech_pag = dato
+        //INSERT Y DATOS NECESARIOS PARA EL INSERT
+        fun insert() {
+            val insert =
+                connect.prepareStatement("INSERT INTO tb_nomina (nomb_emp, ape_emp, n_emp, sal_base, hs_trab, deducc, fech_pag) VALUES (?, ?, ?, ?, ?, ?, ?)")
+            val valores = datosToInsert()
+            for (i in valores.indices) {
+                insert.setString(i + 1, valores[i])
             }
-        }
-        return nominaToList(nomina)
-    }
-
-    fun insert(valores: List<Any>, sentencia: String) {
-        val insert = connect.prepareStatement(sentencia)
-        for (i in valores.indices) {
-            when (valores[i]) {
-                is String -> insert.setString(
-                    i + 1,
-                    valores[i].toString()
-                ) //sumamos 1 al i ya que el parameterindex debe empezar en 1
-                is Double -> insert.setDouble(i + 1, valores[i].toString().toDouble())
-                is Int -> insert.setInt(i + 1, valores[i].toString().toInt())
-            }
-        }
-        insert.executeUpdate() //actualizamos cambios
-    }
-
-    fun delete(sentencia: String) = statement.executeUpdate(sentencia)
-
-    fun select(sentencia: String): String {
-        val select = statement.executeQuery(sentencia)
-        var salida = ""
-        while (select.next()) { //Recorremos los registros del select y los vamos imprimiendo
-            for (i in 1..select.metaData.columnCount) {
-                salida += "${select.getString(i)}, "
-            }
-            salida += "\n ${"-".repeat(10)} \n"
+            insert.executeUpdate() //actualizamos cambios
         }
 
-        return salida
+        fun datosToInsert(): List<String> {
+            val nomina = Nomina()
+            val listaAtrib = listOf("nombEmp", "apeEmp", "nEmp", "salBase", "hsTrab", "deducc", "fechPag")
+
+            for (item in listaAtrib) {
+                print("Introduzca su $item:\n")
+                val dato = readln()
+                when (item) {
+                    listaAtrib[0] -> nomina.nombEmp = dato
+                    listaAtrib[1] -> nomina.apeEmp = dato
+                    listaAtrib[2] -> nomina.nEmp = dato.toInt()
+                    listaAtrib[3] -> nomina.salBase = dato.toDouble()
+                    listaAtrib[4] -> nomina.hsTrab = dato.toInt()
+                    listaAtrib[5] -> nomina.deducc = dato.toDouble()
+                    listaAtrib[6] -> nomina.fechPag = dato
+                }
+            }
+
+            return listOf(
+                nomina.nombEmp, nomina.apeEmp, nomina.nEmp.toString(),
+                nomina.salBase.toString(), nomina.hsTrab.toString(), nomina.deducc.toString(), nomina.fechPag
+            )
+        }
+
+        fun select(): String {
+            val select = statement.executeQuery("SELECT * FROM tb_nomina")
+            var salida = ""
+            while (select.next()) { //Recorremos los registros del select y los vamos imprimiendo
+                for (i in 1..select.metaData.columnCount) {
+                    salida += "${select.getString(i)}, "
+                }
+                salida += "\n ${"-".repeat(10)} \n"
+            }
+
+            return salida
+        }
+
+        fun delete() = statement.executeUpdate("DELETE FROM tb_nomina")
+        fun update() { //no funciona, mirar pq
+            print("Introduzca el dato a actualizar |nomb_emp, ape_emp, n_emp, sal_base, hs_trab, deducc, fech_pag|:\n")
+            val entrada = readln()
+
+            print("Introduzca el numero del empleado\n")
+            val numero = readln()
+
+            print("Introduzca el nuevo dato:\n")
+            val nuevoDato = readln()
+
+            statement.executeQuery("Update tb_nomina Set '$entrada'='$nuevoDato' Where n_emp = '$numero'")
+        }
     }
 
-    fun update(){
-
-
-    }
-
+    //cosas de XML (Hay que moverlo de aqui a otro proyecto)
     fun selectToNominaObject(nombre_tabla: String): MutableList<Nomina> {
         val sentencia =
             "SELECT * FROM $nombre_tabla" //hacemos un select de la tabla para extraer sus datos y convertirlos a objetos
@@ -82,13 +82,13 @@ class Sql_Oper(private val connect: Connection) {
         val listaNominas: MutableList<Nomina> = mutableListOf()
         while (select.next()) { //Recorremos los registros del select y los vamos imprimiendo
             for (i in 1..select.metaData.columnCount step (7)) { //almacenamos cada 7 valores para obtener cada objeto
-                nomina.nomb_emp = select.getString(i)
-                nomina.ape_emp = select.getString(i + 1)
-                nomina.n_emp = select.getString(i + 2).toInt()
-                nomina.sal_base = select.getString(i + 3).toDouble()
-                nomina.hs_trab = select.getString(i + 4).toInt()
+                nomina.nombEmp = select.getString(i)
+                nomina.apeEmp = select.getString(i + 1)
+                nomina.nEmp = select.getString(i + 2).toInt()
+                nomina.salBase = select.getString(i + 3).toDouble()
+                nomina.hsTrab = select.getString(i + 4).toInt()
                 nomina.deducc = select.getString(i + 5).toDouble()
-                nomina.fech_pag = select.getString(i + 6)
+                nomina.fechPag = select.getString(i + 6)
             }
             listaNominas.add(nomina) //añadimos a la lista antes de pasar a la siguiente nomina
             nomina = Nomina() //borramos la nomina una vez guardada, para almacenar la siguiente

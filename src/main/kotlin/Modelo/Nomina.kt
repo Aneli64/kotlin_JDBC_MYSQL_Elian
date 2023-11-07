@@ -1,15 +1,15 @@
 package Modelo
 
-class Nomina(var nomb_emp: String = "",
-             var ape_emp: String = "",
-             var n_emp: Int = 0,
-             var sal_base: Double = 0.0,
-             var hs_trab: Int = 0,
+class Nomina(var nombEmp: String = "",
+             var apeEmp: String = "",
+             var nEmp: Int = 0,
+             var salBase: Double = 0.0,
+             var hsTrab: Int = 0,
              var deducc: Double = 0.0,
-             var fech_pag: String = "")
+             var fechPag: String = "")
 {
     override fun toString(): String {
-        return "Modelo.Nomina(nomb_emp='$nomb_emp', ape_emp='$ape_emp', n_emp=$n_emp, sal_base=$sal_base, hs_trab=$hs_trab, deducc=$deducc, fech_pag='$fech_pag')"
+        return "Modelo.Nomina(nomb_emp='$nombEmp', ape_emp='$apeEmp', n_emp=$nEmp, sal_base=$salBase, hs_trab=$hsTrab, deducc=$deducc, fech_pag='$fechPag')"
     }
 
 }
