@@ -5,6 +5,8 @@ import Modelo.Nomina
 import java.sql.Connection
 
 class SqlOper {
+    //numero de empleado que se va incrementado cuando insertamos uno nuevo
+    var numEmp = 1 + listaNominas.size
     companion object {
         //VARIABLES NECESARIAS PARA LA CONEXION DE LA BD
         private val statement = Conexion.connect.createStatement()
@@ -12,6 +14,8 @@ class SqlOper {
 
         //Lista que utilizaremos para comprobar registros ya existentes
          val listaNominas = selectToNominaObject("tb_nomina")
+
+        //Definimos el numero de empleado como una variable que se va incrementado
 
         /**
          * Metodo que inserta nuestros datos en la BD
@@ -38,7 +42,6 @@ class SqlOper {
             val nomina = Nomina()
             val listaAtrib = listOf("nombEmp", "apeEmp", "salBase", "hsTrab", "deducc", "fechPag")
             //definimos un contador de usuarios que se van registrando (debemos tener en cuenta los que hay ya registrados)
-            var numEmp = 1 + listaNominas.size
 
             /* Bucle con ayuda de un when,
             que itera en nuestra lista de atributos, y rellena los atributos de nuestro objeto Nomina()*/
@@ -53,8 +56,7 @@ class SqlOper {
                     listaAtrib[4] -> nomina.deducc = dato.toDouble()
                     listaAtrib[5] -> nomina.fechPag = dato
                 }
-                nomina.nEmp = numEmp
-                numEmp++
+                nomina.nEmp = SqlOper().numEmp++
             }
 
             return listOf(
@@ -83,7 +85,10 @@ class SqlOper {
         /**
          * Metodo que nos borra todas las tablas de nuestra BD
          */
-        fun delete() = statement.executeUpdate("DELETE FROM tb_nomina")
+        fun delete() {
+            statement.executeUpdate("DELETE FROM tb_nomina")
+            listaNominas.clear()
+        }
 
         /**
          * Metodo que actualiza un dato de un registro en base a su numero de empleado

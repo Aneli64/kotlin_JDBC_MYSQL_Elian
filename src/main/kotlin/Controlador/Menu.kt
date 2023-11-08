@@ -1,46 +1,43 @@
 package Controlador
+
 import Vista.Valores
 
 class Menu {
     companion object {
         fun start() {
-            //SqlOper.delete() //delete inicial para la bd (hay que quitarlo)
-            var input = Valores.inicio()
-            while (input.isNotBlank()) {
-                when (input) {
-                    "1" -> {
-                        Valores.imprimeSelect()
-                        input = Valores.inicio()
-                    }
+            when (Valores.inicio()) {
+                1 -> {
+                    Valores.imprimeSelect()
+                    start()
+                }
 
-                    "2" -> {
-                        SqlOper.insert()
-                        input = Valores.inicio()
-                    }
+                2 -> {
+                    SqlOper.insert()
+                    start()
+                }
 
-                    "3" -> {
-                        SqlOper.delete()
-                        input = Valores.inicio()
-                    }
+                3 -> {
+                    SqlOper.delete()
+                    start()
+                }
 
-                    "4" -> {
-                        SqlOper.deleteRegistro()
-                        input = Valores.inicio()
-                    }
+                4 -> {
+                    SqlOper.deleteRegistro()
+                    start()
+                }
 
-                    "5" -> {
-                        SqlOper.update()
-                        input = Valores.inicio()
-                    }
+                5 -> {
+                    SqlOper.update()
+                    start()
+                }
 
-                    "6" -> break
-                    "7" -> {
-                        for (item in SqlOper.listaNominas){
-                            print("$item\n")
-                        }
-                        print(SqlOper.listaNominas.size)
-                        input = Valores.inicio()
-                    }
+                6 -> {
+                    Valores.imprimeSalir()
+                }
+
+                else -> {
+                    Valores.printError()
+                    start()
                 }
             }
         }
