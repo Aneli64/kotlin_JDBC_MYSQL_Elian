@@ -1,12 +1,10 @@
 package Controlador
-//println y redln estan aqui
-
 import Vista.Valores
 
 class Menu {
     companion object {
         fun start() {
-            Sql_Oper.delete() //delete inicial para la bd (hay que quitarlo)
+            SqlOper.delete() //delete inicial para la bd (hay que quitarlo)
             var input = Valores.inicio()
             while (input.isNotBlank()) {
                 when (input) {
@@ -16,21 +14,26 @@ class Menu {
                     }
 
                     "2" -> {
-                        Sql_Oper.insert()
+                        SqlOper.insert()
                         input = Valores.inicio()
                     }
 
                     "3" -> {
-                        Sql_Oper.delete()
+                        SqlOper.delete()
                         input = Valores.inicio()
                     }
 
                     "4" -> {
-                        Sql_Oper.update()
+                        SqlOper.deleteRegistro()
                         input = Valores.inicio()
                     }
 
-                    "5" -> break
+                    "5" -> {
+                        SqlOper.update()
+                        input = Valores.inicio()
+                    }
+
+                    "6" -> break
                 }
             }
         }
