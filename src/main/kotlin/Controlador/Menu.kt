@@ -4,7 +4,7 @@ import Vista.Valores
 class Menu {
     companion object {
         fun start() {
-            SqlOper.delete() //delete inicial para la bd (hay que quitarlo)
+            //SqlOper.delete() //delete inicial para la bd (hay que quitarlo)
             var input = Valores.inicio()
             while (input.isNotBlank()) {
                 when (input) {
@@ -34,6 +34,13 @@ class Menu {
                     }
 
                     "6" -> break
+                    "7" -> {
+                        for (item in SqlOper.listaNominas){
+                            print("$item\n")
+                        }
+                        print(SqlOper.listaNominas.size)
+                        input = Valores.inicio()
+                    }
                 }
             }
         }
