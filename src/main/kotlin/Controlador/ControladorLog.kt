@@ -10,7 +10,7 @@ class ControladorLog {
         var datos = ""
         datosIns.forEach { datos += "$it, " }
         val log = "Operacion: Insert || Datos: $datosIns"
-
-        ficheroLog.writeText(datos)
+        ficheroLog.appendText("$log\n")
     }
+
 }
