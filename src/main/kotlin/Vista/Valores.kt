@@ -13,7 +13,7 @@ class Valores {
             println("Opcion no disponible, inténtelo de nuevo")
         }
         fun imprimeSelect() {
-            println(SqlOper.select())
+            println(SqlOper().select())
         }
 
         fun imprimeSalir(){

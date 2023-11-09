@@ -12,22 +12,22 @@ class Menu {
                 }
 
                 2 -> {
-                    SqlOper.insert()
+                    SqlOper().insert()
                     start()
                 }
 
                 3 -> {
-                    SqlOper.delete()
+                    SqlOper().delete()
                     start()
                 }
 
                 4 -> {
-                    SqlOper.deleteRegistro()
+                    SqlOper().deleteRegistro()
                     start()
                 }
 
                 5 -> {
-                    SqlOper.update()
+                    SqlOper().update()
                     start()
                 }
 
