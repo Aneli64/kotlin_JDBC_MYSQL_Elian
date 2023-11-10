@@ -1,3 +1,4 @@
+import Controlador.ControladorLog
 import Controlador.Menu
 
 fun main() {

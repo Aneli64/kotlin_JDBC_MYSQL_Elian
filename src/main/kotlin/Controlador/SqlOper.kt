@@ -10,9 +10,10 @@ class SqlOper {
     private val connect: Connection = Conexion.connect
 
     //Lista que utilizaremos para comprobar registros ya existentes
-    val listaNominas = selectToNominaObject("tb_nomina")
+    private val listaNominas = selectToNominaObject("tb_nomina")
+
     //numero de empleado que se va incrementado cuando insertamos uno nuevo
-    var numEmp = 1 + listaNominas.size
+    private var numEmp = 1 + listaNominas.size
 
     /**
      * Metodo que inserta nuestros datos en la BD
@@ -24,10 +25,10 @@ class SqlOper {
         for (i in valores.indices) {
             insert.setString(i + 1, valores[i])
         }
+
         ControladorLog().msgInsert(valores)
         insert.executeUpdate()
     }
-
 
     /**
      * nomina convertida a lista de atributos string para pasarlo a nuestro metodo insert()
@@ -46,7 +47,7 @@ class SqlOper {
         for (item in listaAtrib) {
             nomina.nEmp = SqlOper().numEmp
             print("Introduzca su $item:\n")
-            val dato = readln()
+            var dato = readln()
             when (item) {
                 listaAtrib[0] -> nomina.nombEmp = dato
                 listaAtrib[1] -> nomina.apeEmp = dato
@@ -55,8 +56,8 @@ class SqlOper {
                 listaAtrib[4] -> nomina.deducc = dato.toDouble()
                 listaAtrib[5] -> nomina.fechPag = dato
             }
+            SqlOper().numEmp++
         }
-        SqlOper().numEmp++
         return listOf(
             nomina.nombEmp, nomina.apeEmp, nomina.nEmp.toString(),
             nomina.salBase.toString(), nomina.hsTrab.toString(), nomina.deducc.toString(), nomina.fechPag
@@ -74,9 +75,8 @@ class SqlOper {
             for (i in 1..select.metaData.columnCount) {
                 salida += "${select.getString(i)}, "
             }
-            salida += "\n ${"-".repeat(10)} \n"
         }
-
+        ControladorLog().msgSelect(salida)
         return salida
     }
 
@@ -86,6 +86,7 @@ class SqlOper {
     fun delete() {
         statement.executeUpdate("DELETE FROM tb_nomina")
         listaNominas.clear()
+        ControladorLog().msgDeleteTable()
     }
 
     /**
@@ -110,6 +111,8 @@ class SqlOper {
         preparedStatement.setString(2, numero)
         preparedStatement.executeUpdate()
 
+        ControladorLog().msgUpdate(entrada, nuevoDato)
+
     }
 
     /**
@@ -123,6 +126,8 @@ class SqlOper {
         val preparedStatement = connect.prepareStatement(sql)
         preparedStatement.setString(1, numero)
         preparedStatement.executeUpdate()
+
+        ControladorLog().msgDeleteRegistro(numero)
     }
 
     fun selectToNominaObject(nombre_tabla: String): MutableList<Nomina> {

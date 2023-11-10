@@ -1,6 +1,5 @@
 package Vista
 
-import Controlador.Menu
 import Controlador.SqlOper
 
 class Valores {
