@@ -6,7 +6,7 @@ import java.util.Timer
 
 class ControladorLog {
 
-    private val ficheroLog = File("log/logControlador")
+    val ficheroLog = File("log/logControlador")
 
     //intentar hacer un fun general para todos
     //hay que controlar nulos compi
@@ -14,28 +14,28 @@ class ControladorLog {
     fun msgInsert(datosIns: List<String>) {
         var datos = ""
         datosIns.forEach { datos += "$it, " }
-        val log = "Tipo_Operacion: INSERT || Datos: $datosIns || Hora: ${LocalTime.now()}"
+        val log = "Tipo_Operacion || INSERT || Datos: $datosIns || ${LocalTime.now().hour}:${LocalTime.now().minute}"
         ficheroLog.appendText("$log\n")
     }
 
     fun msgSelect(salidaSelect: String) {
-        val log = "Tipo_Operacion: SELECT || Datos: $salidaSelect || Hora: ${LocalTime.now()}\n"
+        val log = "Tipo_Operacion || SELECT || Datos: $salidaSelect || ${LocalTime.now().hour}:${LocalTime.now().minute}"
         ficheroLog.appendText("$log\n")
     }
 
     fun msgUpdate(datoToUpdate: String, datoActualizado: String) {
         val log =
-            "Tipo_Operacion: UPDATE || Dato a actualizar: $datoToUpdate \n Nuevo dato: $datoActualizado || Hora: ${LocalTime.now()}"
+            "Tipo_Operacion || UPDATE || Dato a actualizar: $datoToUpdate \n Nuevo dato: $datoActualizado || ${LocalTime.now().hour}:${LocalTime.now().minute}"
         ficheroLog.appendText("$log\n")
     }
 
     fun msgDeleteTable() {
-        val log = "Tipo_Operacion: DELETE || Tabla eliminada completamente|| Hora: ${LocalTime.now()}"
+        val log = "Tipo_Operacion || DELETE_TABLE || Tabla eliminada completamente|| ${LocalTime.now().hour}:${LocalTime.now().minute}"
         ficheroLog.appendText("$log\n")
     }
 
     fun msgDeleteRegistro(registroBorrado: String) {
-        val log = "Tipo_Operacion: DELETE REGISTRO || Usuario numero: $registroBorrado ha sido eliminado|| Hora: ${LocalTime.now()}"
+        val log = "Tipo_Operacion: DELETE_REGISTRO || Usuario numero: $registroBorrado ha sido eliminado|| ${LocalTime.now().hour}:${LocalTime.now().minute}"
         ficheroLog.appendText("$log\n")
     }
 
